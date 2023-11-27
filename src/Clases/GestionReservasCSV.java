@@ -40,7 +40,7 @@ public class GestionReservasCSV {
         List<Reserva> nuevasReservas = new ArrayList<>();
 
         for (Reserva reserva : reservas) {
-            if (!(reserva.getNombreUsuario().equals(nombreUsuario) && reserva.getFecha().equals(fecha))) {
+            if (!(reserva.getUsuario().equals(nombreUsuario) && reserva.getFecha().equals(fecha))) {
                 nuevasReservas.add(reserva);
             }
         }

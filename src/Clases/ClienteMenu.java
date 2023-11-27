@@ -2,12 +2,12 @@ package Clases;
 
 import java.util.Scanner;
 
-public class Cliente {
+public class ClienteMenu {
     private final String nombreUsuario;
     private final GestionReservasCSV gestionReservasCSV;
     private final Scanner scanner;
 
-    public Cliente(String nombreUsuario) {
+    public ClienteMenu(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
         this.gestionReservasCSV = new GestionReservasCSV();
         this.scanner = new Scanner(System.in);

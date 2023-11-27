@@ -1,5 +1,5 @@
 import Clases.AdminMenu;
-import Clases.Cliente;
+import Clases.ClienteMenu;
 import Clases.GestionUsuariosCSV;
 import Clases.Usuario;
 
@@ -19,7 +19,7 @@ public class Main {
 
             int opcion = scanner.nextInt();
             scanner.nextLine(); // Consumir la nueva línea
-
+            // TODO: handler para tomar una opcion solo "int"
             switch (opcion) {
                 case 1:
                     iniciarSesion();
@@ -38,19 +38,19 @@ public class Main {
 
     private static void iniciarSesion() {
         System.out.println("Ingrese su nombre de usuario:");
-        String nombreUsuario = scanner.nextLine();
+        String usuario = scanner.nextLine();
 
         System.out.println("Ingrese su contraseña:");
         String contrasena = scanner.nextLine();
 
-        List<Usuario> usuarios = Usuario.obtenerUsuarios();
-        String tipoUsuario = obtenerTipoUsuario(nombreUsuario, contrasena, usuarios);
+        List<Usuario> listaUsuarios = Usuario.obtenerUsuarios();
+        String tipoUsuario = obtenerTipoUsuario(usuario, contrasena, listaUsuarios);
 
         if (tipoUsuario.equals("admin")) {
             AdminMenu adminMenu = new AdminMenu();
             adminMenu.realizarOperacionesCRUD();
         } else if (tipoUsuario.equals("cliente")) {
-            Cliente cliente = new Cliente(nombreUsuario);
+            ClienteMenu cliente = new ClienteMenu(usuario);
             cliente.crearReservaComoCliente();
         } else {
             System.out.println("Autenticación fallida. Verifique su nombre de usuario y contraseña.");
