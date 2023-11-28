@@ -30,11 +30,13 @@ public class PantallaPersonal extends JFrame {
 
         JButton editarButton = new JButton("Editar Reserva");
         JButton borrarButton = new JButton("Borrar Reserva");
+        JButton volverButton = new JButton("Volver a Pantalla Principal");
 
         // Agregar componentes al panel
         panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(editarButton, BorderLayout.SOUTH);
-        panel.add(borrarButton, BorderLayout.SOUTH);
+        panel.add(editarButton, BorderLayout.EAST);
+        panel.add(borrarButton, BorderLayout.WEST);
+        panel.add(volverButton, BorderLayout.SOUTH);
 
         // Agregar panel a la ventana
         add(panel);
@@ -56,6 +58,14 @@ public class PantallaPersonal extends JFrame {
 
         // Actualizar la lista de reservas al mostrar la pantalla
         actualizarListaReservas();
+
+        // Vuelve a la pantalla principla.
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAPantallaPrincipal();
+            }
+        });
     }
 
     private void actualizarListaReservas() {
@@ -90,5 +100,10 @@ public class PantallaPersonal extends JFrame {
                 setVisible(true);
             }
         });
+    }
+    private void volverAPantallaPrincipal() {
+        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+        pantallaPrincipal.mostrar();
+        dispose();
     }
 }
