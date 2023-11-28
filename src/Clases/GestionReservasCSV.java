@@ -11,7 +11,7 @@ import java.util.List;
 public class GestionReservasCSV {
     private static final String FILE_PATH = "reservas.csv";
 
-    public void agregarReserva(Reserva reserva) {
+    public static void agregarReserva(Reserva reserva) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(reserva.toString() + "\n");
         } catch (IOException e) {
@@ -19,7 +19,7 @@ public class GestionReservasCSV {
         }
     }
 
-    public List<Reserva> obtenerReservas() {
+    public static List<Reserva> obtenerReservas() {
         List<Reserva> reservas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -35,12 +35,12 @@ public class GestionReservasCSV {
         return reservas;
     }
 
-    public void eliminarReserva(String nombreUsuario, String fecha) {
+    public static void eliminarReserva(String nombreUsuario, String fecha) {
         List<Reserva> reservas = obtenerReservas();
         List<Reserva> nuevasReservas = new ArrayList<>();
 
         for (Reserva reserva : reservas) {
-            if (!(reserva.getUsuario().equals(nombreUsuario) && reserva.getFecha().equals(fecha))) {
+            if (!(reserva.getNombreUsuario().equals(nombreUsuario) && reserva.getFecha().equals(fecha))) {
                 nuevasReservas.add(reserva);
             }
         }

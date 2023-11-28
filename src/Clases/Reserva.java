@@ -1,20 +1,20 @@
 package Clases;
 
 public class Reserva {
-    private String usuario;
+    private String nombreUsuario;
     private String fecha;
     private String hora;
-    private int comensales;
+    private int numComensales;
 
-    public Reserva(String usuario, String fecha, String hora, int comensales) {
-        this.usuario = usuario;
+    public Reserva(String nombreUsuario, String fecha, String hora, int numComensales) {
+        this.nombreUsuario = nombreUsuario;
         this.fecha = fecha;
         this.hora = hora;
-        this.comensales = comensales;
+        this.numComensales = numComensales;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
     public String getFecha() {
@@ -25,12 +25,12 @@ public class Reserva {
         return hora;
     }
 
-    public int getComensales() {
-        return comensales;
+    public int getNumComensales() {
+        return numComensales;
     }
 
     @Override
     public String toString() {
-        return usuario + "," + fecha + "," + hora + "," + comensales;
+        return nombreUsuario + "," + fecha + "," + hora + "," + numComensales;
     }
 }
