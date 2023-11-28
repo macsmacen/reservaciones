@@ -28,6 +28,7 @@ public class PantallaPrincipal extends JFrame {
 
         JButton loginButton = new JButton("Iniciar sesión");
         JButton registerButton = new JButton("Registrarse");
+        JButton exitButton = new JButton("Salir"); // Agregar el botón "Salir"
 
         // Agregar componentes al panel
         panel.add(new JLabel("Nombre de Usuario:"));
@@ -36,6 +37,7 @@ public class PantallaPrincipal extends JFrame {
         panel.add(passwordField);
         panel.add(loginButton);
         panel.add(registerButton);
+        panel.add(exitButton); // Agregar el botón "Salir"
 
         // Agregar panel a la ventana
         add(panel);
@@ -43,17 +45,22 @@ public class PantallaPrincipal extends JFrame {
         // Acciones de los botones
         loginButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarSesion();
-            }
+            public void actionPerformed(ActionEvent e) { iniciarSesion(); }
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
+            public void actionPerformed(ActionEvent e) { abrirPantallaRegistro(); }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                abrirPantallaRegistro();
+                // Llamada al método dispose() al hacer clic en "Salir"
+                dispose();
             }
         });
+
     }
 
     private void iniciarSesion() {
