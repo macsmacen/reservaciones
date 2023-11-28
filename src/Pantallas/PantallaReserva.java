@@ -20,34 +20,51 @@ public class PantallaReserva extends JFrame {
         this.nombreUsuario = nombreUsuario;
 
         // Configuración de la ventana
-        setSize(400, 200);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra solo esta ventana al presionar cerrar
+        setSize(700, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Creación de componentes
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new GridLayout(4, 1, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Agregado un borde al panel
 
-        fechaField = new JTextField(20);
-        horaField = new JTextField(20);
-        numComensalesField = new JTextField(20);
+        // Título en la parte superior
+        JLabel tituloLabel = new JLabel("Hacer Reserva");
+        tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        tituloLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(tituloLabel);
 
+        // Panel para la fecha y hora
+        JPanel fechaHoraPanel = new JPanel(new GridLayout(1, 4, 10, 10));
+        fechaHoraPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agregado un borde al panel
+        fechaField = new JTextField(15);
+        horaField = new JTextField(15);
+
+        fechaHoraPanel.add(new JLabel("Fecha de la reserva:"));
+        fechaHoraPanel.add(fechaField);
+        fechaHoraPanel.add(new JLabel("Hora de la reserva:"));
+        fechaHoraPanel.add(horaField);
+
+        panel.add(fechaHoraPanel);
+
+        // Panel para el número de comensales
+        JPanel numComensalesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        numComensalesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agregado un borde al panel
+        numComensalesField = new JTextField(15);
+
+        numComensalesPanel.add(new JLabel("Número de comensales:"));
+        numComensalesPanel.add(numComensalesField);
+
+        panel.add(numComensalesPanel);
+
+        // Botón Hacer Reserva
         JButton hacerReservaButton = new JButton("Hacer Reserva");
-        JButton regresarButton = new JButton("Regresar");
+        hacerReservaButton.setBackground(new Color(50, 205, 50)); // Color de fondo verde
+        hacerReservaButton.setForeground(Color.WHITE); // Color de texto blanco
+        hacerReservaButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Agregado un borde al botón
 
-        // Agregar componentes al panel
-        panel.add(new JLabel("Área de Reservas"));
-        panel.add(new JLabel("Fecha de la reserva:"));
-        panel.add(fechaField);
-        panel.add(new JLabel("Hora de la reserva:"));
-        panel.add(horaField);
-        panel.add(new JLabel("Número de comensales:"));
-        panel.add(numComensalesField);
         panel.add(hacerReservaButton);
-        panel.add(regresarButton, BorderLayout.SOUTH);
-
-        // Agregar panel a la ventana
-        add(panel);
 
         // Acciones de los botones
         hacerReservaButton.addActionListener(new ActionListener() {
@@ -56,12 +73,9 @@ public class PantallaReserva extends JFrame {
                 hacerReserva();
             }
         });
-        regresarButton.addActionListener(new ActionListener() { //Vuelve a la pantalla de cliente.
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                regresarAPantallaPrincipal();
-            }
-        });
+
+        // Agregar panel a la ventana
+        add(panel);
     }
 
     private void hacerReserva() {
@@ -97,10 +111,5 @@ public class PantallaReserva extends JFrame {
                 setVisible(true);
             }
         });
-    }
-    private void regresarAPantallaPrincipal() { //Regresa a la pantalla de cliente
-        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
-        pantallaPrincipal.mostrar();
-        dispose();
     }
 }

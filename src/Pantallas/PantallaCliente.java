@@ -14,36 +14,43 @@ public class PantallaCliente extends JFrame {
         this.nombreUsuario = nombreUsuario;
 
         // Configuración de la ventana
-        setSize(400, 200);
+        setSize(700, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Creación de componentes
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panelPrincipal = new JPanel(new BorderLayout());
 
+        // Panel superior con mensaje de bienvenida
+        JPanel panelSuperior = new JPanel();
+        JLabel bienvenidaLabel = new JLabel("Bienvenido, " + nombreUsuario + "!");
+        bienvenidaLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Tamaño y estilo del texto del título
+        panelSuperior.add(bienvenidaLabel);
+
+        // Panel central con el botón de reserva
+        JPanel panelCentral = new JPanel(new GridBagLayout()); // Utilizo GridBagLayout para centrar verticalmente
         JButton reservaButton = new JButton("Hacer Reserva");
-        JButton volverButton = new JButton("Volver a Pantalla Principal");
+        reservaButton.setFont(new Font("Arial", Font.PLAIN, 16)); // Tamaño y estilo del texto del botón
 
-        // Agregar componentes al panel
-        panel.add(new JLabel("Bienvenido, " + nombreUsuario + "!"));
-        panel.add(reservaButton);
-        panel.add(volverButton, BorderLayout.SOUTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(50, 0, 0, 0); // Espacio superior para centrar verticalmente
 
-        // Agregar panel a la ventana
-        add(panel);
+        panelCentral.add(reservaButton, gbc);
+
+        // Agregar componentes al panel principal
+        panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
+
+        // Agregar panel principal a la ventana
+        add(panelPrincipal);
 
         // Acciones de los botones
         reservaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 abrirPantallaReserva();
-            }
-        });
-        volverButton.addActionListener(new ActionListener() { //Vuelve a la pantalla principal.
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                volverAPantallaPrincipal();
             }
         });
     }
@@ -63,9 +70,10 @@ public class PantallaCliente extends JFrame {
             }
         });
     }
-    private void volverAPantallaPrincipal() {
-        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
-        pantallaPrincipal.mostrar();
-        dispose();
+
+    public static void main(String[] args) {
+        // Ejemplo de uso
+        PantallaCliente pantallaCliente = new PantallaCliente("NombreUsuario");
+        pantallaCliente.mostrar();
     }
 }

@@ -3,6 +3,7 @@ package Pantallas;
 import Clases.Usuario;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -15,52 +16,86 @@ public class PantallaPrincipal extends JFrame {
         super("Sistema de Reservas");
 
         // Configuración de la ventana
-        setSize(400, 200);
+        setSize(700, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Creación de componentes
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
 
+        // Título
+        JLabel titleLabel = new JLabel("Sistema de Reservas");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(titleLabel, gbc);
+
+        // Nombre de Usuario
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(new JLabel("Nombre de Usuario:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         usernameField = new JTextField(20);
+        panel.add(usernameField, gbc);
+
+        // Contraseña
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Contraseña:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         passwordField = new JPasswordField(20);
+        panel.add(passwordField, gbc);
 
+        // Botones
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JButton loginButton = new JButton("Iniciar sesión");
+        panel.add(loginButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         JButton registerButton = new JButton("Registrarse");
-        JButton exitButton = new JButton("Salir"); // Agregar el botón "Salir"
+        panel.add(registerButton, gbc);
 
-        // Agregar componentes al panel
-        panel.add(new JLabel("Nombre de Usuario:"));
-        panel.add(usernameField);
-        panel.add(new JLabel("Contraseña:"));
-        panel.add(passwordField);
-        panel.add(loginButton);
-        panel.add(registerButton);
-        panel.add(exitButton); // Agregar el botón "Salir"
-
-        // Agregar panel a la ventana
-        add(panel);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        JButton exitButton = new JButton("Salir");
+        panel.add(exitButton, gbc);
 
         // Acciones de los botones
         loginButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { iniciarSesion(); }
+            public void actionPerformed(ActionEvent e) {
+                iniciarSesion();
+            }
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { abrirPantallaRegistro(); }
+            public void actionPerformed(ActionEvent e) {
+                abrirPantallaRegistro();
+            }
         });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // aquí funciona el boton de salir.
                 dispose();
             }
         });
 
+        // Agregar panel a la ventana
+        add(panel);
     }
 
     private void iniciarSesion() {
@@ -117,4 +152,5 @@ public class PantallaPrincipal extends JFrame {
         pantallaCliente.mostrar();
         dispose();
     }
+
 }
