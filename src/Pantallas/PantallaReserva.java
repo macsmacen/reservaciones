@@ -64,7 +64,12 @@ public class PantallaReserva extends JFrame {
         try {
             int numComensales = Integer.parseInt(numComensalesStr);
 
-            Reserva reserva = new Reserva(nombreUsuario, fecha, hora, numComensales);
+            // Obtener el último ID de reserva y sumarle 1
+            String ultimoId = GestionReservasCSV.obtenerUltimoIdReserva();
+            int nuevoId = (ultimoId != null) ? Integer.parseInt(ultimoId) + 1 : 1;
+
+            // Crear la nueva reserva con el nuevo ID
+            Reserva reserva = new Reserva(String.valueOf(nuevoId), nombreUsuario, fecha, hora, numComensales);
             GestionReservasCSV.agregarReserva(reserva);
 
             JOptionPane.showMessageDialog(this, "Reserva realizada por " + nombreUsuario);
