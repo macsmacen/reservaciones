@@ -4,6 +4,7 @@ import Clases.Reserva;
 import Clases.GestionReservasCSV;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,6 +33,7 @@ public class PantallaReserva extends JFrame {
         numComensalesField = new JTextField(20);
 
         JButton hacerReservaButton = new JButton("Hacer Reserva");
+        JButton regresarButton = new JButton("Regresar");
 
         // Agregar componentes al panel
         panel.add(new JLabel("Área de Reservas"));
@@ -42,6 +44,7 @@ public class PantallaReserva extends JFrame {
         panel.add(new JLabel("Número de comensales:"));
         panel.add(numComensalesField);
         panel.add(hacerReservaButton);
+        panel.add(regresarButton, BorderLayout.SOUTH);
 
         // Agregar panel a la ventana
         add(panel);
@@ -51,6 +54,12 @@ public class PantallaReserva extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 hacerReserva();
+            }
+        });
+        regresarButton.addActionListener(new ActionListener() { //Vuelve a la pantalla de cliente.
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                regresarAPantallaPrincipal();
             }
         });
     }
@@ -88,5 +97,10 @@ public class PantallaReserva extends JFrame {
                 setVisible(true);
             }
         });
+    }
+    private void regresarAPantallaPrincipal() { //Regresa a la pantalla de cliente
+        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+        pantallaPrincipal.mostrar();
+        dispose();
     }
 }
