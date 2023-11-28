@@ -56,7 +56,7 @@ public class PantallaPrincipal extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Llamada al método dispose() al hacer clic en "Salir"
+                // aquí funciona el boton de salir.
                 dispose();
             }
         });
