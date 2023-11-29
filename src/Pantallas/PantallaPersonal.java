@@ -23,6 +23,9 @@ public class PantallaPersonal extends JFrame {
         setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        Image icono = cargarIcono("src/img/rest.jpg");
+        setIconImage(icono);
     }
 
     private void inicializarComponentes() {
@@ -160,8 +163,12 @@ public class PantallaPersonal extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Selecciona una reserva para borrar", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
 
+    }
+    private Image cargarIcono(String ruta) {
+        ImageIcon icono = new ImageIcon(ruta);
+        return icono.getImage();
+    }
 
     private void volverAPantallaPrincipal() {
         PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();

@@ -18,6 +18,9 @@ public class PantallaCliente extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        Image icono = cargarIcono("src/img/rest.jpg");
+        setIconImage(icono);
+
         // Creación de componentes
         JPanel panelPrincipal = new JPanel(new BorderLayout());
 
@@ -71,6 +74,10 @@ public class PantallaCliente extends JFrame {
         });
     }
 
+    private Image cargarIcono(String ruta) {
+        ImageIcon icono = new ImageIcon(ruta);
+        return icono.getImage();
+    }
     public static void main(String[] args) {
         // Ejemplo de uso
         PantallaCliente pantallaCliente = new PantallaCliente("NombreUsuario");

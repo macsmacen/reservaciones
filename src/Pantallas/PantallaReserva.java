@@ -30,6 +30,9 @@ public class PantallaReserva extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        Image icono = cargarIcono("src/img/rest.jpg");
+        setIconImage(icono);
+
         // Creación de componentes
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 1, 10, 10));
@@ -135,5 +138,10 @@ public class PantallaReserva extends JFrame {
                 setVisible(true);
             }
         });
+    }
+
+    private Image cargarIcono(String ruta) {
+        ImageIcon icono = new ImageIcon(ruta);
+        return icono.getImage();
     }
 }

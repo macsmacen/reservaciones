@@ -20,6 +20,9 @@ public class PantallaPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        Image icono = cargarIcono("src/img/rest.jpg");
+        setIconImage(icono);
+
         // Creación de componentes
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -151,6 +154,10 @@ public class PantallaPrincipal extends JFrame {
         PantallaCliente pantallaCliente = new PantallaCliente(nombreUsuario);
         pantallaCliente.mostrar();
         dispose();
+    }
+    private Image cargarIcono(String ruta) {
+        ImageIcon icono = new ImageIcon(ruta);
+        return icono.getImage();
     }
 
 }

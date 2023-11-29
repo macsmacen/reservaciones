@@ -22,6 +22,9 @@ public class PantallaRegistro extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(pantallaPrincipal);
 
+        Image icono = cargarIcono("src/img/rest.jpg");
+        setIconImage(icono);
+
         // Creación de componentes
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -105,6 +108,11 @@ public class PantallaRegistro extends JFrame {
 
     private void mostrarMensajeError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private Image cargarIcono(String ruta) {
+        ImageIcon icono = new ImageIcon(ruta);
+        return icono.getImage();
     }
 
     public static void main(String[] args) {
