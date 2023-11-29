@@ -38,20 +38,25 @@ public class PantallaPersonal extends JFrame {
         reservasTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(reservasTable);
 
+        JButton guardarCambiosButton = new JButton("Guardar Cambios");
         JButton borrarButton = new JButton("Borrar Reserva");
         JButton volverButton = new JButton("Volver a Pantalla Principal");
-        JButton guardarCambiosButton = new JButton("Guardar Cambios");
+
 
         // Establecer tooltips
+        guardarCambiosButton.setToolTipText("Guardar cambios en la reserva seleccionada");
         borrarButton.setToolTipText("Borrar la reserva seleccionada");
         volverButton.setToolTipText("Volver a la Pantalla Principal");
-        guardarCambiosButton.setToolTipText("Guardar cambios en la reserva seleccionada");
+
 
         // Estilos adicionales
         Font buttonFont = new Font("Arial", Font.PLAIN, 14);
+        guardarCambiosButton.setFont(buttonFont);
         borrarButton.setFont(buttonFont);
         volverButton.setFont(buttonFont);
-        guardarCambiosButton.setFont(buttonFont);
+
+        guardarCambiosButton.setBackground(Color.GREEN);
+        guardarCambiosButton.setForeground(Color.WHITE);
 
         borrarButton.setBackground(Color.RED);
         borrarButton.setForeground(Color.WHITE);
@@ -59,13 +64,10 @@ public class PantallaPersonal extends JFrame {
         volverButton.setBackground(Color.GRAY);
         volverButton.setForeground(Color.WHITE);
 
-        guardarCambiosButton.setBackground(Color.GREEN);
-        guardarCambiosButton.setForeground(Color.WHITE);
-
         // Agregar iconos a los botones (asegúrate de tener los archivos de iconos)
+        guardarCambiosButton.setIcon(new ImageIcon("save_icon.png"));
         borrarButton.setIcon(new ImageIcon("delete_icon.png"));
         volverButton.setIcon(new ImageIcon("back_icon.png"));
-        guardarCambiosButton.setIcon(new ImageIcon("save_icon.png"));
 
         // Barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -82,9 +84,9 @@ public class PantallaPersonal extends JFrame {
         // Panel de botones
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 0, 10));
+        buttonPanel.add(guardarCambiosButton);
         buttonPanel.add(borrarButton);
         buttonPanel.add(volverButton);
-        buttonPanel.add(guardarCambiosButton);
         panel.add(buttonPanel, BorderLayout.WEST);
 
         // Establecer estilos de la tabla
