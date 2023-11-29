@@ -1,7 +1,8 @@
 package Pantallas;
 
-import Clases.Reserva;
 import Clases.GestionReservasCSV;
+import Clases.Reserva;
+import Pantallas.PantallaPrincipal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -25,8 +26,7 @@ public class PantallaPersonal extends JFrame {
     }
 
     private void inicializarComponentes() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());
 
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Id");
@@ -40,11 +40,18 @@ public class PantallaPersonal extends JFrame {
 
         JButton borrarButton = new JButton("Borrar Reserva");
         JButton volverButton = new JButton("Volver a Pantalla Principal");
+        JButton guardarCambiosButton = new JButton("Guardar Cambios");
+
+        // Establecer tooltips
+        borrarButton.setToolTipText("Borrar la reserva seleccionada");
+        volverButton.setToolTipText("Volver a la Pantalla Principal");
+        guardarCambiosButton.setToolTipText("Guardar cambios en la reserva seleccionada");
 
         // Estilos adicionales
         Font buttonFont = new Font("Arial", Font.PLAIN, 14);
         borrarButton.setFont(buttonFont);
         volverButton.setFont(buttonFont);
+        guardarCambiosButton.setFont(buttonFont);
 
         borrarButton.setBackground(Color.RED);
         borrarButton.setForeground(Color.WHITE);
@@ -52,18 +59,38 @@ public class PantallaPersonal extends JFrame {
         volverButton.setBackground(Color.GRAY);
         volverButton.setForeground(Color.WHITE);
 
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(borrarButton, BorderLayout.WEST);
-        panel.add(volverButton, BorderLayout.SOUTH);
-
-        // Dentro de tu método inicializarComponentes()
-        JButton guardarCambiosButton = new JButton("Guardar Cambios");
-        guardarCambiosButton.setFont(buttonFont);
         guardarCambiosButton.setBackground(Color.GREEN);
         guardarCambiosButton.setForeground(Color.WHITE);
-        panel.add(guardarCambiosButton, BorderLayout.EAST);
 
-        guardarCambiosButton.addActionListener(e -> guardarCambiosReserva());
+        // Agregar iconos a los botones (asegúrate de tener los archivos de iconos)
+        borrarButton.setIcon(new ImageIcon("delete_icon.png"));
+        volverButton.setIcon(new ImageIcon("back_icon.png"));
+        guardarCambiosButton.setIcon(new ImageIcon("save_icon.png"));
+
+        // Barra de menú
+        JMenuBar menuBar = new JMenuBar();
+        JMenu opcionesMenu = new JMenu("Opciones");
+        JMenuItem guardarItem = new JMenuItem("Guardar Cambios");
+        opcionesMenu.add(guardarItem);
+        menuBar.add(opcionesMenu);
+        setJMenuBar(menuBar);
+
+        guardarItem.addActionListener(e -> guardarCambiosReserva());
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Panel de botones
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(3, 1, 0, 10));
+        buttonPanel.add(borrarButton);
+        buttonPanel.add(volverButton);
+        buttonPanel.add(guardarCambiosButton);
+        panel.add(buttonPanel, BorderLayout.WEST);
+
+        // Establecer estilos de la tabla
+        reservasTable.getTableHeader().setBackground(Color.BLUE);
+        reservasTable.getTableHeader().setForeground(Color.WHITE);
+        reservasTable.setSelectionBackground(Color.YELLOW);
 
         add(panel);
 
@@ -133,13 +160,14 @@ public class PantallaPersonal extends JFrame {
         }
     }
 
-    public void mostrar() {
-        SwingUtilities.invokeLater(() -> setVisible(true));
-    }
 
     private void volverAPantallaPrincipal() {
         PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
         pantallaPrincipal.mostrar();
         dispose();
+    }
+
+    public void mostrar() {
+        SwingUtilities.invokeLater(() -> setVisible(true));
     }
 }

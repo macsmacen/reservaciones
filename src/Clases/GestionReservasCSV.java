@@ -73,13 +73,9 @@ public class GestionReservasCSV {
 
     public static void guardarCambiosReserva(String id, String nombreUsuario, String fecha, String hora, int numComensales) {
         borrarReservaPorId(id);
-
         // Crear una nueva reserva con los cambios
         Reserva nuevaReserva = new Reserva(id, nombreUsuario, fecha, hora, numComensales);
-
         // Agregar la nueva reserva
         agregarReserva(nuevaReserva);
     }
-
-
 }
