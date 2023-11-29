@@ -1,8 +1,7 @@
 package Pantallas;
 
-import Clases.GestionReservasCSV;
 import Clases.Reserva;
-import Pantallas.PantallaPrincipal;
+import Controladores.GestionReservasCSV;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,9 +22,6 @@ public class PantallaPersonal extends JFrame {
         setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        Image icono = cargarIcono("src/img/rest.jpg");
-        setIconImage(icono);
     }
 
     private void inicializarComponentes() {
@@ -41,71 +37,30 @@ public class PantallaPersonal extends JFrame {
         reservasTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(reservasTable);
 
-        JButton guardarCambiosButton = new JButton("Guardar Cambios");
         JButton borrarButton = new JButton("Borrar Reserva");
+        JButton guardarCambiosButton = new JButton("Editar Reserva");
         JButton volverButton = new JButton("Volver a Pantalla Principal");
-
-
-        // Establecer tooltips
-        guardarCambiosButton.setToolTipText("Guardar cambios en la reserva seleccionada");
-        borrarButton.setToolTipText("Borrar la reserva seleccionada");
-        volverButton.setToolTipText("Volver a la Pantalla Principal");
-
-
-        // Estilos adicionales
-        Font buttonFont = new Font("Arial", Font.PLAIN, 14);
-        guardarCambiosButton.setFont(buttonFont);
-        borrarButton.setFont(buttonFont);
-        volverButton.setFont(buttonFont);
-
-        guardarCambiosButton.setBackground(Color.GREEN);
-        guardarCambiosButton.setForeground(Color.WHITE);
-
-        borrarButton.setBackground(Color.RED);
-        borrarButton.setForeground(Color.WHITE);
-
-        volverButton.setBackground(Color.GRAY);
-        volverButton.setForeground(Color.WHITE);
-
-        // Agregar iconos a los botones (asegúrate de tener los archivos de iconos)
-        guardarCambiosButton.setIcon(new ImageIcon("save_icon.png"));
-        borrarButton.setIcon(new ImageIcon("delete_icon.png"));
-        volverButton.setIcon(new ImageIcon("back_icon.png"));
-
-        // Barra de menú
-        JMenuBar menuBar = new JMenuBar();
-        JMenu opcionesMenu = new JMenu("Opciones");
-        JMenuItem guardarItem = new JMenuItem("Guardar Cambios");
-        opcionesMenu.add(guardarItem);
-        menuBar.add(opcionesMenu);
-        setJMenuBar(menuBar);
-
-        guardarItem.addActionListener(e -> guardarCambiosReserva());
 
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // Panel de botones
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 0, 10));
-        buttonPanel.add(guardarCambiosButton);
         buttonPanel.add(borrarButton);
+        buttonPanel.add(guardarCambiosButton);
         buttonPanel.add(volverButton);
-        panel.add(buttonPanel, BorderLayout.WEST);
 
-        // Establecer estilos de la tabla
-        reservasTable.getTableHeader().setBackground(Color.BLUE);
-        reservasTable.getTableHeader().setForeground(Color.WHITE);
-        reservasTable.setSelectionBackground(Color.YELLOW);
+        panel.add(buttonPanel, BorderLayout.WEST);
 
         add(panel);
 
         borrarButton.addActionListener(e -> borrarReserva());
+        guardarCambiosButton.addActionListener(e -> guardarCambiosReserva());
         volverButton.addActionListener(e -> volverAPantallaPrincipal());
 
         actualizarListaReservas();
     }
 
-    private void actualizarListaReservas() {
+    public void actualizarListaReservas() {
         try {
             List<Reserva> reservas = GestionReservasCSV.obtenerReservas();
             tableModel.setRowCount(0);
@@ -119,55 +74,47 @@ public class PantallaPersonal extends JFrame {
         }
     }
 
-    private void guardarCambiosReserva() {
-        int selectedRow = reservasTable.getSelectedRow();
-        if (selectedRow != -1) {
-            // Obtener el ID de la reserva seleccionada
-            String selectedReservaId = reservasTable.getValueAt(selectedRow, 0).toString();
-
-            try {
-                // Obtener los datos de la fila seleccionada
-                String nombreUsuario = reservasTable.getValueAt(selectedRow, 1).toString();
-                String fecha = reservasTable.getValueAt(selectedRow, 2).toString();
-                String hora = reservasTable.getValueAt(selectedRow, 3).toString();
-                int numComensales = Integer.parseInt(reservasTable.getValueAt(selectedRow, 4).toString());
-
-                // Llamar al método en GestionReservasCSV para guardar los cambios
-                GestionReservasCSV.guardarCambiosReserva(selectedReservaId, nombreUsuario, fecha, hora, numComensales);
-
-                // Actualizar la tabla después de guardar los cambios
-                actualizarListaReservas();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error al guardar los cambios", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una reserva para guardar los cambios", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void borrarReserva() {
-        int selectedRow = reservasTable.getSelectedRow();
-        if (selectedRow != -1) {
-            // Obtener el ID de la reserva seleccionada
-            String selectedReservaId = reservasTable.getValueAt(selectedRow, 0).toString();
+        int filaSeleccionada = reservasTable.getSelectedRow();
 
-            try {
-                // Llamar al método en GestionReservasCSV para borrar la reserva por ID
-                GestionReservasCSV.borrarReservaPorId(selectedReservaId);
-
-                // Actualizar la tabla después de la eliminación
-                actualizarListaReservas();
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una reserva para borrar", "Error", JOptionPane.ERROR_MESSAGE);
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una reserva para borrar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
+        String idReserva = tableModel.getValueAt(filaSeleccionada, 0).toString();
+
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de borrar la reserva?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            GestionReservasCSV.borrarReservaPorId(idReserva);
+            actualizarListaReservas();
+            JOptionPane.showMessageDialog(this, "Reserva borrada correctamente");
+        }
     }
-    private Image cargarIcono(String ruta) {
-        ImageIcon icono = new ImageIcon(ruta);
-        return icono.getImage();
+
+    private void guardarCambiosReserva() {
+        int filaSeleccionada = reservasTable.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una reserva para editar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String idReserva = tableModel.getValueAt(filaSeleccionada, 0).toString();
+        String nuevoUsuario = JOptionPane.showInputDialog(this, "Nuevo nombre de usuario:");
+        String nuevaFecha = JOptionPane.showInputDialog(this, "Nueva fecha:");
+        String nuevaHora = JOptionPane.showInputDialog(this, "Nueva hora:");
+        String nuevoComensales = JOptionPane.showInputDialog(this, "Nuevo número de comensales:");
+
+        try {
+            int numComensales = Integer.parseInt(nuevoComensales);
+            GestionReservasCSV.actualizarReserva(idReserva, nuevoUsuario, nuevaFecha, nuevaHora, numComensales);
+            actualizarListaReservas();
+            JOptionPane.showMessageDialog(this, "Cambios guardados correctamente");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido para el número de comensales.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void volverAPantallaPrincipal() {

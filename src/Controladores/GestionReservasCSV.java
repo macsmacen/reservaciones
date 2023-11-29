@@ -1,17 +1,16 @@
-package Clases;
+package Controladores;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import Clases.Reserva;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GestionReservasCSV {
     private static final String FILE_PATH = "reservas.csv";
 
-    public static void agregarReserva(Reserva reserva) {
+    public void agregarReserva(Reserva reserva) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(reserva.toString() + "\n");
         } catch (IOException e) {
@@ -19,6 +18,7 @@ public class GestionReservasCSV {
         }
     }
 
+    // Método obtenerReservas en GestionReservasCSV
     public static List<Reserva> obtenerReservas() {
         List<Reserva> reservas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
@@ -26,7 +26,13 @@ public class GestionReservasCSV {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 5) {
-                    reservas.add(new Reserva(parts[0], parts[1], parts[2],parts[3], Integer.parseInt(parts[4])));
+                    reservas.add(new Reserva.Builder()
+                            .id(parts[0])
+                            .nombreUsuario(parts[1])
+                            .fecha(parts[2])
+                            .hora(parts[3])
+                            .numComensales(Integer.parseInt(parts[4]))
+                            .build());
                 }
             }
         } catch (IOException e) {
@@ -42,13 +48,32 @@ public class GestionReservasCSV {
         }
         return "0"; // Devuelve "0" si no hay reservas
     }
-
-    public static void borrarReservaPorId(String id) {
+    public static void actualizarReserva(String id, String nuevoUsuario, String nuevaFecha, String nuevaHora, int nuevoNumComensales) {
         List<Reserva> reservas = obtenerReservas();
 
         for (Reserva reserva : reservas) {
             if (reserva.getId().equals(id)) {
-                reservas.remove(reserva);
+                reserva.setNombreUsuario(nuevoUsuario);
+                reserva.setFecha(nuevaFecha);
+                reserva.setHora(nuevaHora);
+                reserva.setNumComensales(nuevoNumComensales);
+                actualizarArchivoCSV(reservas);
+                return; // Salir del método después de actualizar la reserva
+            }
+        }
+
+        // Si llegamos aquí, no se encontró la reserva con el ID correspondiente
+        throw new IllegalArgumentException("No se encontró la reserva con el ID: " + id);
+    }
+    public static void borrarReservaPorId(String id) {
+        List<Reserva> reservas = obtenerReservas();
+
+        // Utilizar un iterador para evitar ConcurrentModificationException
+        Iterator<Reserva> iterator = reservas.iterator();
+        while (iterator.hasNext()) {
+            Reserva reserva = iterator.next();
+            if (reserva.getId().equals(id)) {
+                iterator.remove(); // Utilizar el método remove del iterador
                 actualizarArchivoCSV(reservas);
                 return; // Salir del método después de borrar la reserva
             }
@@ -69,13 +94,5 @@ public class GestionReservasCSV {
             // Puedes manejar el error según tus necesidades
             throw new RuntimeException("Error al actualizar el archivo CSV", e);
         }
-    }
-
-    public static void guardarCambiosReserva(String id, String nombreUsuario, String fecha, String hora, int numComensales) {
-        borrarReservaPorId(id);
-        // Crear una nueva reserva con los cambios
-        Reserva nuevaReserva = new Reserva(id, nombreUsuario, fecha, hora, numComensales);
-        // Agregar la nueva reserva
-        agregarReserva(nuevaReserva);
     }
 }

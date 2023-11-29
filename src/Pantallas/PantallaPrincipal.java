@@ -12,16 +12,14 @@ public class PantallaPrincipal extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    public PantallaPrincipal() {
-        super("Sistema de Reservas");
+    private static PantallaPrincipal instancia;
 
+    // Constructor privado para evitar la creación directa de instancias
+    public PantallaPrincipal() {
         // Configuración de la ventana
         setSize(700, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        Image icono = cargarIcono("src/img/rest.jpg");
-        setIconImage(icono);
 
         // Creación de componentes
         JPanel panel = new JPanel(new GridBagLayout());
@@ -101,6 +99,16 @@ public class PantallaPrincipal extends JFrame {
         add(panel);
     }
 
+    // Método estático para obtener la instancia única
+    public static PantallaPrincipal obtenerInstancia() {
+        if (instancia == null) {
+            instancia = new PantallaPrincipal();
+        }
+        return instancia;
+    }
+
+    // Otras funciones y métodos de la clase
+
     private void iniciarSesion() {
         String nombreUsuario = usernameField.getText();
         String contrasena = new String(passwordField.getPassword());
@@ -128,7 +136,7 @@ public class PantallaPrincipal extends JFrame {
     }
 
     private void abrirPantallaRegistro() {
-        PantallaRegistro pantallaRegistro = new PantallaRegistro(this);
+        PantallaRegistro pantallaRegistro = new PantallaRegistro();
         pantallaRegistro.mostrar();
     }
 
@@ -155,9 +163,10 @@ public class PantallaPrincipal extends JFrame {
         pantallaCliente.mostrar();
         dispose();
     }
-    private Image cargarIcono(String ruta) {
-        ImageIcon icono = new ImageIcon(ruta);
-        return icono.getImage();
-    }
 
+    public static void main(String[] args) {
+        // Ejemplo de uso
+        PantallaPrincipal pantallaPrincipal = PantallaPrincipal.obtenerInstancia();
+        pantallaPrincipal.mostrar();
+    }
 }

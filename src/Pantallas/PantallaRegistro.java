@@ -1,6 +1,7 @@
 package Pantallas;
 
 import Clases.Usuario;
+import Repositorio.UsuarioRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,117 +9,71 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PantallaRegistro extends JFrame {
-    private JTextField nuevoUsuarioField;
-    private JPasswordField nuevaContrasenaField;
-    private PantallaPrincipal pantallaPrincipal;
+    private JTextField nombreUsuarioField;
+    private JPasswordField contraseñaField;
 
-    public PantallaRegistro(PantallaPrincipal pantallaPrincipal) {
+    public PantallaRegistro() {
         super("Registro de Usuario");
+        configurarVentana();
+        inicializarComponentes();
+    }
 
-        this.pantallaPrincipal = pantallaPrincipal;
+    private void configurarVentana() {
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
 
-        // Configuración de la ventana
-        setSize(700, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(pantallaPrincipal);
+    private void inicializarComponentes() {
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
 
-        Image icono = cargarIcono("src/img/rest.jpg");
-        setIconImage(icono);
+        JLabel nombreUsuarioLabel = new JLabel("Nombre de Usuario:");
+        nombreUsuarioField = new JTextField();
 
-        // Creación de componentes
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        JLabel contraseñaLabel = new JLabel("Contraseña:");
+        contraseñaField = new JPasswordField();
 
-        // Título
-        JLabel titleLabel = new JLabel("Registro", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(titleLabel, BorderLayout.NORTH);
+        JButton registrarButton = new JButton("Registrar");
+        JButton volverButton = new JButton("Volver a Pantalla Principal");
 
-        // Panel de contenido
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        panel.add(nombreUsuarioLabel);
+        panel.add(nombreUsuarioField);
+        panel.add(contraseñaLabel);
+        panel.add(contraseñaField);
+        panel.add(registrarButton);
+        panel.add(volverButton);
 
-        JLabel labelUsuario = new JLabel("Nuevo Usuario:");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        contentPanel.add(labelUsuario, gbc);
-
-        nuevoUsuarioField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        contentPanel.add(nuevoUsuarioField, gbc);
-
-        JLabel labelContrasena = new JLabel("Nueva Contraseña:");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        contentPanel.add(labelContrasena, gbc);
-
-        nuevaContrasenaField = new JPasswordField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        contentPanel.add(nuevaContrasenaField, gbc);
-
-        JButton registerButton = new JButton("Registrarse");
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.fill = GridBagConstraints.NONE;
-        contentPanel.add(registerButton, gbc);
-
-        // Agregar panel de contenido al panel principal
-        panel.add(contentPanel, BorderLayout.CENTER);
-
-        // Agregar panel principal a la ventana
         add(panel);
 
-        // Acciones de los botones
-        registerButton.addActionListener(e -> realizarRegistro());
+        registrarButton.addActionListener(e -> registrarUsuario());
+        volverButton.addActionListener(e -> volverAPantallaPrincipal());
+    }
+
+    private void registrarUsuario() {
+        String nombreUsuario = nombreUsuarioField.getText();
+        char[] contraseña = contraseñaField.getPassword();
+
+        // Validaciones y lógica de registro de usuario
+        // ...
+
+        // Ejemplo: Guardar el usuario en el repositorio
+        Usuario nuevoUsuario = new Usuario(nombreUsuario,"cliente", new String(contraseña));
+        UsuarioRepository.agregarUsuario(nuevoUsuario);
+
+        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+        // Limpiar los campos después de registrar
+        nombreUsuarioField.setText("");
+        contraseñaField.setText("");
+    }
+
+    private void volverAPantallaPrincipal() {
+        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+        pantallaPrincipal.mostrar();
+        dispose();
     }
 
     public void mostrar() {
         SwingUtilities.invokeLater(() -> setVisible(true));
-    }
-
-    private void realizarRegistro() {
-        String nuevoUsuario = nuevoUsuarioField.getText();
-        String nuevaContrasena = new String(nuevaContrasenaField.getPassword());
-
-        if (nuevoUsuario.trim().isEmpty() || nuevaContrasena.trim().isEmpty()) {
-            mostrarMensajeError("Por favor, complete todos los campos.");
-            return;
-        }
-
-        if (!Usuario.validarNombreUsuario(nuevoUsuario)) {
-            mostrarMensajeError("El nombre de usuario ya está en uso. Por favor, elija otro.");
-            return;
-        }
-
-        Usuario usuarioNuevo = new Usuario(nuevoUsuario, "cliente", nuevaContrasena);
-        Usuario.agregarUsuario(usuarioNuevo);
-
-        JOptionPane.showMessageDialog(this, "Registro exitoso. Ahora puede iniciar sesión.");
-
-        // Cerrar la pantalla de registro y mostrar la pantalla principal
-        dispose();
-        pantallaPrincipal.mostrar();
-    }
-
-    private void mostrarMensajeError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private Image cargarIcono(String ruta) {
-        ImageIcon icono = new ImageIcon(ruta);
-        return icono.getImage();
-    }
-
-    public static void main(String[] args) {
-        // Ejemplo de uso
-        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
-        PantallaRegistro pantallaRegistro = new PantallaRegistro(pantallaPrincipal);
-        pantallaRegistro.mostrar();
     }
 }

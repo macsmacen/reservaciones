@@ -9,60 +9,79 @@ public class PantallaCliente extends JFrame {
     private String nombreUsuario;
 
     public PantallaCliente(String nombreUsuario) {
-        super("Área del Cliente");
-
+        super("Pantalla del Cliente");
         this.nombreUsuario = nombreUsuario;
 
         // Configuración de la ventana
-        setSize(700, 400);
+        setSize(600, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        Image icono = cargarIcono("src/img/rest.jpg");
-        setIconImage(icono);
-
         // Creación de componentes
-        JPanel panelPrincipal = new JPanel(new BorderLayout());
-
-        // Panel superior con mensaje de bienvenida
-        JPanel panelSuperior = new JPanel();
-        JLabel bienvenidaLabel = new JLabel("Bienvenido, " + nombreUsuario + "!");
-        bienvenidaLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Tamaño y estilo del texto del título
-        panelSuperior.add(bienvenidaLabel);
-
-        // Panel central con el botón de reserva
-        JPanel panelCentral = new JPanel(new GridBagLayout()); // Utilizo GridBagLayout para centrar verticalmente
-        JButton reservaButton = new JButton("Hacer Reserva");
-        reservaButton.setFont(new Font("Arial", Font.PLAIN, 16)); // Tamaño y estilo del texto del botón
-
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        // Bienvenida al Cliente
+        JLabel welcomeLabel = new JLabel("¡Bienvenido, " + nombreUsuario + "!");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(50, 0, 0, 0); // Espacio superior para centrar verticalmente
+        gbc.gridwidth = 2;
+        panel.add(welcomeLabel, gbc);
 
-        panelCentral.add(reservaButton, gbc);
+        // Funciones del Cliente
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        JTextArea functionsTextArea = new JTextArea("Aquí se mostrarían las funciones para el Cliente.\nEjemplo: Ver Reservas, Realizar Reserva, etc.");
+        functionsTextArea.setEditable(false);
+        panel.add(functionsTextArea, gbc);
 
-        // Agregar componentes al panel principal
-        panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
-        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
+        // Botón para Crear Reservación
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        JButton crearReservacionButton = new JButton("Crear Reservación");
+        panel.add(crearReservacionButton, gbc);
 
-        // Agregar panel principal a la ventana
-        add(panelPrincipal);
-
-        // Acciones de los botones
-        reservaButton.addActionListener(new ActionListener() {
+        // Acción del botón para Crear Reservación
+        crearReservacionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 abrirPantallaReserva();
             }
         });
+
+        // Botón para Cerrar Sesión
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        JButton logoutButton = new JButton("Cerrar Sesión");
+        panel.add(logoutButton, gbc);
+
+        // Acción del botón para Cerrar Sesión
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cerrarSesion();
+            }
+        });
+
+        // Agregar panel a la ventana
+        add(panel);
     }
 
     private void abrirPantallaReserva() {
         PantallaReserva pantallaReserva = new PantallaReserva(nombreUsuario);
         pantallaReserva.mostrar();
-        // Opcional: Puedes cerrar la pantalla actual si es necesario
-        // dispose();
+    }
+
+    private void cerrarSesion() {
+        PantallaPrincipal pantallaPrincipal = PantallaPrincipal.obtenerInstancia();
+        pantallaPrincipal.mostrar();
+        dispose();
     }
 
     public void mostrar() {
@@ -72,15 +91,5 @@ public class PantallaCliente extends JFrame {
                 setVisible(true);
             }
         });
-    }
-
-    private Image cargarIcono(String ruta) {
-        ImageIcon icono = new ImageIcon(ruta);
-        return icono.getImage();
-    }
-    public static void main(String[] args) {
-        // Ejemplo de uso
-        PantallaCliente pantallaCliente = new PantallaCliente("NombreUsuario");
-        pantallaCliente.mostrar();
     }
 }
