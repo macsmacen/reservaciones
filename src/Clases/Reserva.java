@@ -1,7 +1,5 @@
 package Clases;
 
-import java.util.UUID;
-
 public class Reserva {
     private String id;
     private String nombreUsuario;
