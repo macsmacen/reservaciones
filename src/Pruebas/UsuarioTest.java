@@ -26,7 +26,7 @@ public class UsuarioTest {
     @Test
     public void registrosEnReservaTest(){
         usuarios = Usuario.obtenerUsuarios();
-        //Verificamos que el archivo "reservas.csv" tenga contenido
+        //Verificamos que el archivo "usuarios.csv" tenga contenido
         Assert.assertFalse(usuarios.isEmpty());
         //Verificamos la cantidad de reservas: 2
         Assert.assertEquals(3, usuarios.size());
